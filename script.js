@@ -9,7 +9,7 @@ const translations = {
       ctaSecondary: 'ギャラリーへ',
     },
     latest: {
-      label: 'Latest Work',
+      label: 'Featured',
       title: '注目作品',
       poem: '沈黙の底で、かすかな輪郭が立ち上がる。<br />そこにあるのは、消えない気配と、<br />名前を持たないまま漂う感情。',
       meta: 'featured work · poem attached',
