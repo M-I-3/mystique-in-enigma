@@ -9,12 +9,12 @@ const translations = {
       ctaSecondary: 'ギャラリーへ',
     },
     latest: {
-      label: 'Featured',
+      label: 'Featured Works',
       title: '注目作品',
       poem: '沈黙の底で、かすかな輪郭が立ち上がる。<br />そこにあるのは、消えない気配と、<br />名前を持たないまま漂う感情。',
       meta: 'featured work · poem attached',
     },
-    works: { label: 'Portfolio', title: '新作一覧', cta: 'ギャラリーを開く' },
+    works: { label: 'Latest Works', title: '新作一覧', cta: 'ギャラリーを開く' },
     about: {
       label: 'About',
       title: 'MIEについて',
@@ -45,8 +45,8 @@ const translations = {
       ctaSecondary: 'Open Gallery',
     },
     latest: {
-      label: 'Latest Work',
-      title: 'Latest Work',
+      label: 'Featured Works',
+      title: 'Featured Works',
       poem: 'At the bottom of silence, a faint outline rises.<br />What remains is an unbroken trace,<br />an emotion drifting without a name.',
       meta: 'featured work · poem attached',
     },
