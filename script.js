@@ -24,7 +24,7 @@ const translations = {
       label: 'Links',
       title: 'SNS / Shop',
       note: 'お問い合わせや最新情報はSNSから。作品販売や各種リンクはここにまとめます。',
-      linktree: 'SNS / 販売先 / 連絡導線',
+      linktree: 'SNS / 販売先 / その他',
     },
     gallery: {
       eyebrow: 'Archive / Updating Collection',
