@@ -5,16 +5,16 @@ const translations = {
       eyebrow: 'The Enigma / Shadow Muse',
       title: '見えるものと、見えないもののあいだに漂う作品群。',
       lede: '作品画像に詩を添え、静かな闇の中に言葉と感情を浮かび上がらせる MIE のポートフォリオサイトです。',
-      ctaPrimary: '注目作品を見る',
+      ctaPrimary: '最新作を見る',
       ctaSecondary: 'ギャラリーへ',
     },
     latest: {
-      label: 'Featured Works',
-      title: '注目作品',
+      label: 'Latest Work',
+      title: '最新作',
       poem: '沈黙の底で、かすかな輪郭が立ち上がる。<br />そこにあるのは、消えない気配と、<br />名前を持たないまま漂う感情。',
       meta: 'featured work · poem attached',
     },
-    works: { label: 'New Releases', title: '新作一覧', cta: 'ギャラリーを開く' },
+    works: { label: 'Portfolio', title: '作品一覧', cta: 'ギャラリーを開く' },
     about: {
       label: 'About',
       title: 'MIEについて',
@@ -24,7 +24,7 @@ const translations = {
       label: 'Links',
       title: 'SNS / Shop',
       note: 'お問い合わせや最新情報はSNSから。作品販売や各種リンクはここにまとめます。',
-      linktree: 'SNS / 販売先 / その他',
+      linktree: 'SNS / 販売先 / 連絡導線',
     },
     gallery: {
       eyebrow: 'Archive / Updating Collection',
@@ -32,7 +32,7 @@ const translations = {
       lede: 'ここには、MIE の作品をひとつずつ蓄積していきます。題名や詩はあとから更新できます。',
       tagline: '言葉ではない音を、あなたの心に届けたい。',
       sectionLabel: 'Gallery',
-      sectionTitle: '公開中の作品一覧',
+      sectionTitle: '更新予定の作品一覧',
     },
   },
   en: {
@@ -45,12 +45,12 @@ const translations = {
       ctaSecondary: 'Open Gallery',
     },
     latest: {
-      label: 'Featured Works',
-      title: 'Featured Works',
+      label: 'Latest Work',
+      title: 'Latest Work',
       poem: 'At the bottom of silence, a faint outline rises.<br />What remains is an unbroken trace,<br />an emotion drifting without a name.',
       meta: 'featured work · poem attached',
     },
-    works: { label: 'New Releases', title: 'New Releases', cta: 'Open Gallery' },
+    works: { label: 'Portfolio', title: 'Portfolio', cta: 'Open Gallery' },
     about: {
       label: 'About',
       title: 'About MIE',
@@ -68,7 +68,7 @@ const translations = {
       lede: 'Each work by MIE will be stored here one by one. Titles and poems can be updated later.',
       tagline: 'I want to bring you a sound that is not made of words.',
       sectionLabel: 'Gallery',
-      sectionTitle: 'List of Current Releases',
+      sectionTitle: 'Works to be updated',
     },
   },
 };
@@ -131,7 +131,7 @@ const modalPoem = document.getElementById('modal-poem');
 
 document.querySelectorAll('.gallery-thumb').forEach((button) => {
   button.addEventListener('click', () => {
-    if (!modal || !modalImage || !modalCaption) return;
+    if (!modal || !modalImage || !modalCaption || !modalPoem) return;
     const full = button.getAttribute('data-full');
     const alt = button.getAttribute('data-alt') || '';
     const poem = button.getAttribute('data-poem') || '';
@@ -139,7 +139,7 @@ document.querySelectorAll('.gallery-thumb').forEach((button) => {
     modalImage.src = full;
     modalImage.alt = alt;
     modalCaption.textContent = alt;
-    if (modalPoem) modalPoem.textContent = poem;
+    modalPoem.textContent = poem;
     modal.classList.add('is-open');
     modal.setAttribute('aria-hidden', 'false');
   });
