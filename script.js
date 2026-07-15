@@ -5,16 +5,16 @@ const translations = {
       eyebrow: 'The Enigma / Shadow Muse',
       title: '見えるものと、見えないもののあいだに漂う作品群。',
       lede: '作品画像に詩を添え、静かな闇の中に言葉と感情を浮かび上がらせる MIE のポートフォリオサイトです。',
-      ctaPrimary: '最新作を見る',
+      ctaPrimary: '注目作品を見る',
       ctaSecondary: 'ギャラリーへ',
     },
     latest: {
-      label: 'Latest Work',
-      title: '最新作',
+      label: 'Featured Works',
+      title: '注目作品',
       poem: '沈黙の底で、かすかな輪郭が立ち上がる。<br />そこにあるのは、消えない気配と、<br />名前を持たないまま漂う感情。',
       meta: 'featured work · poem attached',
     },
-    works: { label: 'Portfolio', title: '作品一覧', cta: 'ギャラリーを開く' },
+    works: { label: 'Portfolio', title: '新作一覧', cta: 'ギャラリーを開く' },
     about: {
       label: 'About',
       title: 'MIEについて',
@@ -32,7 +32,7 @@ const translations = {
       lede: 'ここには、MIE の作品をひとつずつ蓄積していきます。題名や詩はあとから更新できます。',
       tagline: '言葉ではない音を、あなたの心に届けたい。',
       sectionLabel: 'Gallery',
-      sectionTitle: '更新予定の作品一覧',
+      sectionTitle: '公開中の新作一覧',
     },
   },
   en: {
@@ -45,8 +45,8 @@ const translations = {
       ctaSecondary: 'Open Gallery',
     },
     latest: {
-      label: 'Latest Work',
-      title: 'Latest Work',
+      label: 'Featured Works',
+      title: 'Featured Works',
       poem: 'At the bottom of silence, a faint outline rises.<br />What remains is an unbroken trace,<br />an emotion drifting without a name.',
       meta: 'featured work · poem attached',
     },
@@ -68,7 +68,8 @@ const translations = {
       lede: 'Each work by MIE will be stored here one by one. Titles and poems can be updated later.',
       tagline: 'I want to bring you a sound that is not made of words.',
       sectionLabel: 'Gallery',
-      sectionTitle: 'Works to be updated',
+      sectionTitle: 'List of Published Works
+',
     },
   },
 };
