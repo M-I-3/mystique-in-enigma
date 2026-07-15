@@ -24,7 +24,7 @@ const translations = {
       label: 'Links',
       title: 'SNS / Shop',
       note: 'お問い合わせや最新情報はSNSから。作品販売や各種リンクはここにまとめます。',
-      linktree: 'SNS / 販売先 / 連絡導線',
+      linktree: 'SNS / 販売先 / その他',
     },
     gallery: {
       eyebrow: 'Archive / Updating Collection',
@@ -32,7 +32,7 @@ const translations = {
       lede: 'ここには、MIE の作品をひとつずつ蓄積していきます。題名や詩はあとから更新できます。',
       tagline: '言葉ではない音を、あなたの心に届けたい。',
       sectionLabel: 'Gallery',
-      sectionTitle: '更新予定の作品一覧',
+      sectionTitle: '公開中の作品一覧',
     },
   },
   en: {
