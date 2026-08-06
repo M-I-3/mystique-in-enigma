@@ -29,7 +29,7 @@
       'nav.gallery': 'Gallery',
       'nav.links': 'Links',
       'hero.tagline': 'Digital Gothic / Glitch Grunge / MIE',
-      'hero.title': 'MIE',
+      'hero.title': 'A body of work drifting between the visible and the unseen.',
       'hero.copy': 'I turn feelings that do not exist into a visible form, standing between what can be seen and what cannot.',
       'latest.label': 'Featured Work',
       'latest.title': 'Featured Work',
