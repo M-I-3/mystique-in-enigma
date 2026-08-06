@@ -268,3 +268,34 @@ h3 { font-size: 1.35rem; margin-bottom: 10px; text-transform: uppercase; }
   .panel { padding: 22px; }
   h1 { max-width: none; }
 }
+.gallery-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+
+.pagination-link {
+  min-width: 2.5rem;
+  padding: 0.65rem 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: var(--text);
+  text-decoration: none;
+  text-align: center;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.04);
+  transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+
+.pagination-link:hover,
+.pagination-link:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.48);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.pagination-link.is-current {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.7);
+}
