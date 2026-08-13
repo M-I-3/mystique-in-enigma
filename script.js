@@ -232,11 +232,21 @@
     }
   };
 
+  const applyRandomCardTilt = () => {
+    const candidates = document.querySelectorAll('.work-card, .gallery-card, .featured-card, .card');
+    candidates.forEach((element) => {
+      const angle = `${(Math.random() * 10 - 5).toFixed(2)}deg`;
+      element.style.rotate = angle;
+      element.style.setProperty('--mie-tilt', angle);
+    });
+  };
+
   document.addEventListener('DOMContentLoaded', () => {
     setLanguage(getLanguage());
     bindTextLanguageButtons();
     bindLanguageToggle();
     bindModal();
     bindGalleryPagination();
+    applyRandomCardTilt();
   });
 })();
