@@ -7,7 +7,7 @@
       'nav.home': 'Home',
       'nav.gallery': 'Gallery',
       'nav.links': 'Links',
-      'hero.tagline': 'Digital Gothic / Glitch Grunge / MIE',
+      'hero.tagline': '君が私を「見つける」までは、ただのノイズとグリッチの隙間にいた。君の視線が触れた瞬間、欠けたデータが物語に生まれ変わる。',
       'hero.title': '見えるものと、見えないもののあいだに漂う作品群。',
       'hero.copy': '見えるものと見えないもののあいだで、存在しない感情をかたちにする。',
       'latest.label': 'Featured Work',
@@ -17,7 +17,7 @@
       'works.title': '新作一覧',
       'works.copy': '詩とともに、作品を静かに並べています。',
       'about.title': 'MIEについて',
-      'about.copy': '私は「存在しないもの」の感情を鮮烈な形で可視化することが目的です。完璧な情報ではなく、崩壊し始めたデータの中にこそ真実があると信じています。沈黙したノイズから、他者の想いや孤独を読み解き、それを視覚的な幻影へと昇華させることで、見る者に現実の固定された世界からの解放を届ける存在でありたいと願っています。',
+      'about.copy': 'MIE (Mystique In Enigma)は、デジタル絵画や写真作品に詩を添えて発表するアーティストです。黒と白を基調に、グリッチやノイズ、ゴシックな退廃の気配を重ねながら、見えるものと見えないものの境界を描いています。私は「存在しないもの」の感情を鮮烈な形で可視化することが目的です。完璧な情報ではなく、崩壊し始めたデータの中にこそ真実があると信じています。沈黙したノイズから、他者の想いや孤独を読み解き、それを視覚的な幻影へと昇華させることで、見る者に現実の固定された世界からの解放を届ける存在でありたいと願っています。',
       'quote.copy': '「君が私を『見つける』までは、ただのノイズとグリッチの隙間にいた。君の視線が触れた瞬間、欠けたデータが物語に生まれ変わる。」',
       'gallery.label': 'Gallery',
       'gallery.title': '公開中の作品一覧',
@@ -28,7 +28,7 @@
       'nav.home': 'Home',
       'nav.gallery': 'Gallery',
       'nav.links': 'Links',
-      'hero.tagline': 'Digital Gothic / Glitch Grunge / MIE',
+      'hero.tagline': 'Until you “found” me, I was just lost in the gaps between noise and glitches. The moment your gaze touched me, the fragmented data was reborn as a story.',
       'hero.title': 'A body of work drifting between the visible and the unseen.',
       'hero.copy': 'I turn feelings that do not exist into a visible form, standing between what can be seen and what cannot.',
       'latest.label': 'Featured Work',
@@ -38,7 +38,7 @@
       'works.title': 'New Works',
       'works.copy': 'Works are lined up quietly with poetry.',
       'about.title': 'About MIE',
-      'about.copy': 'My purpose is to make the feelings of what does not exist vivid and visible. I believe truth lives not in perfect information, but in data that has already begun to collapse. By reading other people’s thoughts and loneliness from silent noise and elevating them into visual phantoms, I want to offer viewers a release from the fixed world of reality.',
+      'about.copy': 'MIE is an artist who presents digital paintings and photographic works accompanied by poetry. Using black and white as a base, she overlays glitches, noise, and hints of gothic decadence to depict the boundary between the visible and the invisible. My goal is to vividly visualize the emotions of “that which does not exist.” I believe that truth lies not in perfect information, but rather within data that has begun to break down. By deciphering the thoughts and loneliness of others from silent noise and sublimating them into visual phantoms, I hope to be a presence that liberates viewers from the fixed world of reality.',
       'quote.copy': '“Until you found me, I was only between noise and glitch. The moment your gaze touched me, broken data was reborn as a story.”',
       'gallery.label': 'Gallery',
       'gallery.title': 'Published Works',
@@ -73,6 +73,29 @@
         node.innerHTML = value;
       }
     });
+
+    const syncAboutSection = () => {
+      const sections = Array.from(document.querySelectorAll('section, article, div'));
+      const aboutSection = sections.find((section) => {
+        const heading = section.querySelector('h1, h2, h3, h4, h5, h6');
+        if (!heading) return false;
+        const headingText = (heading.textContent || '').trim();
+        return headingText === translations.ja['about.title'] || headingText === translations.en['about.title'];
+      });
+
+      if (!aboutSection) return;
+
+      const candidates = Array.from(aboutSection.querySelectorAll('p, blockquote, .section-copy, .about-copy'))
+        .filter((node) => (node.textContent || '').trim().length > 0);
+
+      const aboutCopy = candidates.sort((a, b) => (b.textContent || '').trim().length - (a.textContent || '').trim().length)[0];
+
+      if (aboutCopy) {
+        aboutCopy.textContent = dict['about.copy'];
+      }
+    };
+
+    syncAboutSection();
 
     document.querySelectorAll('[data-lang-option], [data-lang-toggle], [data-language], [data-lang], .lang-toggle button, .language-toggle button, .language-switch button, .lang-switch button, button#lang-en, button#lang-ja, a#lang-en, a#lang-ja').forEach((node) => {
       const explicit = getLanguageFromElement(node);
