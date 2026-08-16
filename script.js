@@ -23,6 +23,10 @@
       'gallery.title': '公開中の作品一覧',
       'gallery.copy': 'デジタルとゴシックの隙間で、あなたに「見えない」ものを描く。言葉ではない音を、あなたの心に届けたい。',
       'modal.close': 'Close',
+      'cta.latest': '最新作を見る',
+      'cta.gallery': 'ギャラリーへ',
+      'cta.view': '作品を見る',
+      'cta.open-gallery': 'ギャラリーを開く',
     },
     en: {
       'nav.home': 'Home',
@@ -44,6 +48,10 @@
       'gallery.title': 'Published Works',
       'gallery.copy': 'Between digital and gothic, I draw what cannot be seen. I want to carry a sound beyond words into your heart.',
       'modal.close': 'Close',
+      'cta.latest': 'View Latest Works',
+      'cta.gallery': 'Go to Gallery',
+      'cta.view': 'View Work',
+      'cta.open-gallery': 'Open Gallery',
     },
   };
 
@@ -71,6 +79,29 @@
       const value = dict[key];
       if (typeof value === 'string') {
         node.innerHTML = value;
+      }
+    });
+
+    const buttonLabelMap = new Map([
+      [translations.ja['cta.latest'], translations.en['cta.latest']],
+      [translations.ja['cta.gallery'], translations.en['cta.gallery']],
+      [translations.ja['cta.view'], translations.en['cta.view']],
+      [translations.ja['cta.open-gallery'], translations.en['cta.open-gallery']],
+    ]);
+
+    document.querySelectorAll('button, a').forEach((node) => {
+      const text = (node.textContent || '').trim();
+      if (lang === 'en') {
+        if (buttonLabelMap.has(text)) {
+          node.textContent = buttonLabelMap.get(text);
+        }
+      } else {
+        for (const [jaText, enText] of buttonLabelMap.entries()) {
+          if (text === enText) {
+            node.textContent = jaText;
+            break;
+          }
+        }
       }
     });
 
