@@ -42,6 +42,7 @@ img { display: block; width: 100%; height: auto; }
 .hero, main, .footer { position: relative; z-index: 1; width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
 .topbar { display: flex; justify-content: space-between; align-items: center; padding: 24px 0 18px; border-bottom: 1px solid var(--line); }
 .brand { display: grid; gap: 4px; }
+.brand-logo { display: block; width: min(8.5rem, 22vw); height: auto; object-fit: contain; }
 .brand-mark { font-size: 1.15rem; letter-spacing: 0.45em; text-transform: uppercase; }
 .brand-sub, .eyebrow, .section-label, .meta, .caption-text, .footer, .contact-note { color: var(--muted); font-size: 0.92rem; }
 .navlinks { display: flex; gap: 18px; font-size: 0.95rem; align-items: center; }
