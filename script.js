@@ -261,29 +261,49 @@
     if (!grid) return;
 
     const cards = Array.from(grid.children).filter((node) => node instanceof HTMLElement);
-    if (cards.length <= PAGE_SIZE) return;
+    const totalPages = Math.ceil(cards.length / PAGE_SIZE);
+    let nav = document.querySelector('.gallery-pagination');
 
-    const isPage2 = new URLSearchParams(window.location.search).get('page') === '2'
-      || window.location.pathname.toLowerCase().includes('gallery-page2');
+    if (totalPages <= 1) {
+      cards.forEach((card) => {
+        card.hidden = false;
+        card.style.display = '';
+      });
+      if (nav) nav.remove();
+      return;
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const pageFromQuery = Number.parseInt(params.get('page') || '', 10);
+    const pageFromPath = Number.parseInt(
+      window.location.pathname.toLowerCase().match(/gallery-page(\d+)/)?.[1] || '',
+      10
+    );
+    const requestedPage = pageFromQuery || pageFromPath || 1;
+    const currentPage = Math.min(Math.max(requestedPage, 1), totalPages);
+    const startIndex = (currentPage - 1) * PAGE_SIZE;
+    const endIndex = startIndex + PAGE_SIZE;
 
     cards.forEach((card, index) => {
-      const showOnPage2 = index >= PAGE_SIZE;
-      const visible = isPage2 ? showOnPage2 : !showOnPage2;
+      const visible = index >= startIndex && index < endIndex;
       card.hidden = !visible;
       card.style.display = visible ? '' : 'none';
     });
 
-    let nav = document.querySelector('.gallery-pagination');
     if (!nav) {
       nav = document.createElement('nav');
       nav.className = 'gallery-pagination';
       nav.setAttribute('aria-label', 'Gallery pages');
-      nav.innerHTML = `
-        <a class="pagination-link${isPage2 ? '' : ' is-current'}" href="gallery.html"${isPage2 ? '' : ' aria-current="page"'}>1</a>
-        <a class="pagination-link${isPage2 ? ' is-current' : ''}" href="gallery.html?page=2"${isPage2 ? ' aria-current="page"' : ''}>2</a>
-      `;
       grid.insertAdjacentElement('afterend', nav);
     }
+
+    nav.innerHTML = Array.from({ length: totalPages }, (_, index) => {
+      const page = index + 1;
+      const href = page === 1 ? 'gallery.html' : `gallery.html?page=${page}`;
+      const currentClass = page === currentPage ? ' is-current' : '';
+      const currentAttr = page === currentPage ? ' aria-current="page"' : '';
+      return `<a class="pagination-link${currentClass}" href="${href}"${currentAttr}>${page}</a>`;
+    }).join('');
   };
 
   const applyRandomCardTilt = () => {
