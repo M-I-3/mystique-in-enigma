@@ -165,6 +165,59 @@ h3 { font-size: 1.35rem; margin-bottom: 10px; text-transform: uppercase; }
   background: rgba(10, 10, 14, 0.9);
   color: #ffffff;
 }
+
+/* Digital Archive Status Tag Overlay (Bottom-right corner, Clickable link to store) */
+.status-tag {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  background: rgba(6, 6, 9, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #ede8e3;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  pointer-events: auto;
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid transparent;
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
+}
+.status-tag:hover {
+  background: rgba(12, 12, 18, 0.94);
+  color: #ffffff;
+  border-color: rgba(209, 182, 255, 0.35);
+  box-shadow: 0 0 14px var(--glow);
+  transform: translateY(-1px);
+}
+
+/* Sold Out state (Calm, muted tone, non-clickable) */
+.status-tag.is-sold {
+  color: #8c8782;
+  background: rgba(6, 6, 9, 0.65);
+  pointer-events: none;
+  cursor: default;
+  border-color: transparent;
+  box-shadow: none;
+  transform: none;
+}
+.card:hover .status-tag.is-sold,
+.gallery-card:hover .status-tag.is-sold,
+.work-feature:hover .status-tag.is-sold,
+.status-tag.is-sold:hover {
+  color: #8c8782;
+  background: rgba(6, 6, 9, 0.65);
+  border-color: transparent;
+  box-shadow: none;
+  transform: none;
+}
+
 .modal {
   position: fixed;
   inset: 0;
@@ -189,7 +242,7 @@ h3 { font-size: 1.35rem; margin-bottom: 10px; text-transform: uppercase; }
   display: grid;
   grid-template-rows: auto auto 1fr;
   gap: 12px;
-  padding: 18px;
+  padding: 24px 20px 20px;
   border: 1px solid rgba(255,255,255,0.14);
   background: rgba(8, 8, 10, 0.96);
   box-shadow: 0 24px 120px rgba(0,0,0,0.75);
@@ -212,13 +265,25 @@ h3 { font-size: 1.35rem; margin-bottom: 10px; text-transform: uppercase; }
 .modal-close {
   position: absolute;
   top: 10px;
-  right: 12px;
-  border: 1px solid rgba(255,255,255,0.14);
-  background: rgba(255,255,255,0.04);
-  color: var(--text);
-  width: 36px;
-  height: 36px;
+  right: 14px;
+  border: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 1.4rem;
+  font-weight: 200;
+  line-height: 1;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  padding: 0;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+.modal-close:hover {
+  color: var(--text);
+  opacity: 1;
 }
 .link-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 20px; }
 .link-card {

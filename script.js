@@ -25,6 +25,8 @@
       'gallery.searchLabel': '作品を検索',
       'gallery.searchPlaceholder': '題名・英題・作品番号で検索',
       'modal.close': 'Close',
+      'tag.available': '一点物 · 販売中 ↗',
+      'tag.sold': 'Sold Out',
       'cta.latest': '最新作を見る',
       'cta.gallery': 'ギャラリーへ',
       'cta.view': '作品を見る',
@@ -52,6 +54,8 @@
       'gallery.searchLabel': 'Search works',
       'gallery.searchPlaceholder': 'Search by title or work number',
       'modal.close': 'Close',
+      'tag.available': '1 of 1 · Available ↗',
+      'tag.sold': 'Sold Out',
       'cta.latest': 'View Latest Works',
       'cta.gallery': 'Go to Gallery',
       'cta.view': 'View Work',
@@ -377,41 +381,95 @@
     renderGalleryPage();
   };
 
-  const attachWorkNumbers = () => {
+  const attachWorkBadges = () => {
     const thumbs = document.querySelectorAll('.gallery-thumb');
+    const currentLang = getLanguage();
+    const availableText = translations[currentLang]?.['tag.available'] || '一点物 · 販売中';
+
     thumbs.forEach((btn) => {
-      if (btn.querySelector('.work-tag')) return;
+      if (!btn.querySelector('.work-tag')) {
+        const img = btn.querySelector('img');
+        const candidates = [
+          btn.getAttribute('data-work-number'),
+          btn.getAttribute('data-alt'),
+          img?.getAttribute('alt'),
+          btn.getAttribute('data-full'),
+          img?.getAttribute('src'),
+        ];
 
-      const img = btn.querySelector('img');
-      const candidates = [
-        btn.getAttribute('data-work-number'),
-        btn.getAttribute('data-alt'),
-        img?.getAttribute('alt'),
-        btn.getAttribute('data-full'),
-        img?.getAttribute('src'),
-      ];
-
-      let workNumber = null;
-      for (const text of candidates) {
-        if (!text) continue;
-        const hashMatch = text.match(/#(\d+)/);
-        if (hashMatch) {
-          workNumber = `#${hashMatch[1]}`;
-          break;
+        let workNumber = null;
+        for (const text of candidates) {
+          if (!text) continue;
+          const hashMatch = text.match(/#(\d+)/);
+          if (hashMatch) {
+            workNumber = `#${hashMatch[1]}`;
+            break;
+          }
+          const mieMatch = text.match(/MIE_(\d+)/i);
+          if (mieMatch) {
+            workNumber = `#${mieMatch[1]}`;
+            break;
+          }
         }
-        const mieMatch = text.match(/MIE_(\d+)/i);
-        if (mieMatch) {
-          workNumber = `#${mieMatch[1]}`;
-          break;
+
+        if (workNumber) {
+          const tag = document.createElement('span');
+          tag.className = 'work-tag';
+          tag.setAttribute('aria-hidden', 'true');
+          tag.textContent = workNumber;
+          btn.appendChild(tag);
         }
       }
 
-      if (workNumber) {
-        const tag = document.createElement('span');
-        tag.className = 'work-tag';
-        tag.setAttribute('aria-hidden', 'true');
-        tag.textContent = workNumber;
-        btn.appendChild(tag);
+      if (!btn.querySelector('.status-tag')) {
+        const status = (
+          btn.getAttribute('data-status') ||
+          btn.closest('[data-status]')?.getAttribute('data-status') ||
+          'sale'
+        ).trim().toLowerCase();
+
+        if (status === 'none' || status === 'hidden') {
+          return;
+        }
+
+        const isSold = status === 'sold';
+        const DEFAULT_STORE_URL = 'https://gicleepod.com/ja/store/mie';
+        const storeUrl =
+          btn.getAttribute('data-store-url') ||
+          btn.getAttribute('data-shop-url') ||
+          btn.closest('[data-store-url]')?.getAttribute('data-store-url') ||
+          btn.closest('[data-shop-url]')?.getAttribute('data-shop-url') ||
+          DEFAULT_STORE_URL;
+
+        const statusTag = document.createElement('span');
+        statusTag.className = 'status-tag' + (isSold ? ' is-sold' : '');
+
+        if (isSold) {
+          statusTag.setAttribute('aria-hidden', 'true');
+          statusTag.setAttribute('data-i18n', 'tag.sold');
+          statusTag.textContent = translations[currentLang]?.['tag.sold'] || 'Sold Out';
+        } else {
+          statusTag.setAttribute('role', 'link');
+          statusTag.setAttribute('tabindex', '0');
+          statusTag.setAttribute('aria-label', currentLang === 'en' ? 'Acquire on GicleePOD (opens in new tab)' : 'GicleePODで作品を見る（新しいタブで開く）');
+          statusTag.setAttribute('data-i18n', 'tag.available');
+          statusTag.textContent = availableText;
+
+          const openStore = (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            window.open(storeUrl, '_blank', 'noopener,noreferrer');
+          };
+
+          statusTag.addEventListener('click', openStore);
+          statusTag.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              openStore(e);
+            }
+          });
+        }
+
+        btn.appendChild(statusTag);
       }
     });
   };
@@ -426,11 +484,11 @@
   };
 
   document.addEventListener('DOMContentLoaded', () => {
+    attachWorkBadges();
     setLanguage(getLanguage());
     bindTextLanguageButtons();
     bindLanguageToggle();
     bindModal();
-    attachWorkNumbers();
     bindGalleryPagination();
     applyRandomCardTilt();
   });
