@@ -276,6 +276,49 @@ h3 { font-size: 1.35rem; margin-bottom: 10px; text-transform: uppercase; }
   margin-top: 1.75rem;
 }
 
+.gallery-search {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0 0 1.8rem;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05), transparent 32%),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.03) 0 1px, transparent 1px 6px),
+    rgba(0, 0, 0, 0.5);
+  clip-path: polygon(0 4%, 99% 0, 100% 94%, 1% 100%);
+}
+
+.gallery-search label {
+  color: var(--muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.gallery-search input {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 0;
+  color: var(--text);
+  background: rgba(0, 0, 0, 0.72);
+  font: inherit;
+  outline: none;
+}
+
+.gallery-search input:focus {
+  border-color: rgba(255, 255, 255, 0.66);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18), 12px 0 0 rgba(180, 210, 255, 0.08);
+}
+
+.gallery-search-status {
+  min-height: 1.3em;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
 .pagination-link {
   min-width: 2.5rem;
   padding: 0.65rem 0.9rem;

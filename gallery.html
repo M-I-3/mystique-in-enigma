@@ -43,6 +43,18 @@
           <p class="section-label" data-i18n="gallery.sectionLabel">Gallery</p>
           <h2 data-i18n="gallery.sectionTitle">公開中の作品一覧</h2>
         </div>
+        <div class="gallery-search" role="search">
+          <label for="gallery-search-input" data-i18n="gallery.searchLabel">作品を検索</label>
+          <input
+            id="gallery-search-input"
+            type="search"
+            data-gallery-search
+            data-i18n-placeholder="gallery.searchPlaceholder"
+            placeholder="題名・英題・作品番号で検索"
+            autocomplete="off"
+          />
+          <p class="gallery-search-status" data-gallery-search-status aria-live="polite"></p>
+        </div>
         <div class="gallery-grid">
          <article class="gallery-card">
             <button class="gallery-thumb" type="button" data-full="assets/MIE_001_1024x1024_1820002240.jpeg" data-alt="Mystique in Enigma #001" data-poem="雪が深く降り立つ場所

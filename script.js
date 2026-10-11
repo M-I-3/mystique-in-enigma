@@ -22,6 +22,8 @@
       'gallery.label': 'Gallery',
       'gallery.title': '公開中の作品一覧',
       'gallery.copy': 'デジタルとゴシックの隙間で、あなたに「見えない」ものを描く。言葉ではない音を、あなたの心に届けたい。',
+      'gallery.searchLabel': '作品を検索',
+      'gallery.searchPlaceholder': '題名・英題・作品番号で検索',
       'modal.close': 'Close',
       'cta.latest': '最新作を見る',
       'cta.gallery': 'ギャラリーへ',
@@ -47,6 +49,8 @@
       'gallery.label': 'Gallery',
       'gallery.title': 'Published Works',
       'gallery.copy': 'Between digital and gothic, I draw what cannot be seen. I want to carry a sound beyond words into your heart.',
+      'gallery.searchLabel': 'Search works',
+      'gallery.searchPlaceholder': 'Search by title or work number',
       'modal.close': 'Close',
       'cta.latest': 'View Latest Works',
       'cta.gallery': 'Go to Gallery',
@@ -79,6 +83,14 @@
       const value = dict[key];
       if (typeof value === 'string') {
         node.innerHTML = value;
+      }
+    });
+
+    document.querySelectorAll('[data-i18n-placeholder]').forEach((node) => {
+      const key = node.getAttribute('data-i18n-placeholder');
+      const value = dict[key];
+      if (typeof value === 'string') {
+        node.setAttribute('placeholder', value);
       }
     });
 
@@ -138,6 +150,8 @@
         node.setAttribute('aria-pressed', active ? 'true' : 'false');
       }
     });
+
+    document.dispatchEvent(new CustomEvent('mie:languagechange'));
   };
 
   const getLanguageFromElement = (element) => {
@@ -261,17 +275,9 @@
     if (!grid) return;
 
     const cards = Array.from(grid.children).filter((node) => node instanceof HTMLElement);
-    const totalPages = Math.ceil(cards.length / PAGE_SIZE);
+    const searchInput = document.querySelector('[data-gallery-search]');
+    const searchStatus = document.querySelector('[data-gallery-search-status]');
     let nav = document.querySelector('.gallery-pagination');
-
-    if (totalPages <= 1) {
-      cards.forEach((card) => {
-        card.hidden = false;
-        card.style.display = '';
-      });
-      if (nav) nav.remove();
-      return;
-    }
 
     const params = new URLSearchParams(window.location.search);
     const pageFromQuery = Number.parseInt(params.get('page') || '', 10);
@@ -279,16 +285,7 @@
       window.location.pathname.toLowerCase().match(/gallery-page(\d+)/)?.[1] || '',
       10
     );
-    const requestedPage = pageFromQuery || pageFromPath || 1;
-    const currentPage = Math.min(Math.max(requestedPage, 1), totalPages);
-    const startIndex = (currentPage - 1) * PAGE_SIZE;
-    const endIndex = startIndex + PAGE_SIZE;
-
-    cards.forEach((card, index) => {
-      const visible = index >= startIndex && index < endIndex;
-      card.hidden = !visible;
-      card.style.display = visible ? '' : 'none';
-    });
+    let currentPage = pageFromQuery || pageFromPath || 1;
 
     if (!nav) {
       nav = document.createElement('nav');
@@ -297,13 +294,87 @@
       grid.insertAdjacentElement('afterend', nav);
     }
 
-    nav.innerHTML = Array.from({ length: totalPages }, (_, index) => {
-      const page = index + 1;
-      const href = page === 1 ? 'gallery.html' : `gallery.html?page=${page}`;
-      const currentClass = page === currentPage ? ' is-current' : '';
-      const currentAttr = page === currentPage ? ' aria-current="page"' : '';
-      return `<a class="pagination-link${currentClass}" href="${href}"${currentAttr}>${page}</a>`;
-    }).join('');
+    const normalize = (value) => value.toString().toLowerCase().replace(/\s+/g, ' ').trim();
+    const getCardSearchText = (card) => {
+      const thumb = card.querySelector('.gallery-thumb');
+      const image = card.querySelector('img');
+      return normalize([
+        card.textContent,
+        thumb?.dataset.alt,
+        image?.alt,
+      ].filter(Boolean).join(' '));
+    };
+    const getWorkNumbers = (text) => Array.from(text.matchAll(/(?:#|mie_)(0*\d+)/g))
+      .map((match) => match[1].replace(/^0+/, '') || '0');
+
+    const indexedCards = cards.map((card) => ({
+      card,
+      text: getCardSearchText(card),
+    })).map((item) => ({
+      ...item,
+      numbers: getWorkNumbers(item.text),
+    }));
+
+    const renderGalleryPage = () => {
+      const query = normalize(searchInput?.value || '');
+      const queryNumber = query.match(/\d+/)?.[0].replace(/^0+/, '') || '';
+      const filteredCards = query
+        ? indexedCards.filter((item) => item.text.includes(query) || (queryNumber && item.numbers.includes(queryNumber)))
+        : indexedCards;
+      const totalPages = Math.ceil(filteredCards.length / PAGE_SIZE);
+
+      if (totalPages <= 1) {
+        currentPage = 1;
+      } else {
+        currentPage = Math.min(Math.max(currentPage, 1), totalPages);
+      }
+
+      const startIndex = (currentPage - 1) * PAGE_SIZE;
+      const endIndex = startIndex + PAGE_SIZE;
+      const visibleCards = new Set(filteredCards.slice(startIndex, endIndex).map((item) => item.card));
+
+      cards.forEach((card) => {
+        const visible = visibleCards.has(card);
+        card.hidden = !visible;
+        card.style.display = visible ? '' : 'none';
+      });
+
+      if (totalPages <= 1) {
+        nav.innerHTML = '';
+      } else {
+        nav.innerHTML = Array.from({ length: totalPages }, (_, index) => {
+          const page = index + 1;
+          const href = page === 1 ? 'gallery.html' : `gallery.html?page=${page}`;
+          const currentClass = page === currentPage ? ' is-current' : '';
+          const currentAttr = page === currentPage ? ' aria-current="page"' : '';
+          return `<a class="pagination-link${currentClass}" href="${href}" data-page="${page}"${currentAttr}>${page}</a>`;
+        }).join('');
+      }
+
+      if (searchStatus) {
+        const lang = getLanguage();
+        const count = filteredCards.length;
+        searchStatus.textContent = query
+          ? (lang === 'en' ? `${count} work(s) found.` : `${count}件の作品が見つかりました。`)
+          : '';
+      }
+    };
+
+    searchInput?.addEventListener('input', () => {
+      currentPage = 1;
+      renderGalleryPage();
+    });
+
+    nav.addEventListener('click', (event) => {
+      const link = event.target.closest('[data-page]');
+      if (!link) return;
+      event.preventDefault();
+      currentPage = Number.parseInt(link.getAttribute('data-page'), 10) || 1;
+      renderGalleryPage();
+    });
+
+    document.addEventListener('mie:languagechange', renderGalleryPage);
+    renderGalleryPage();
   };
 
   const applyRandomCardTilt = () => {
