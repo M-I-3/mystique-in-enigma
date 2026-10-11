@@ -377,6 +377,45 @@
     renderGalleryPage();
   };
 
+  const attachWorkNumbers = () => {
+    const thumbs = document.querySelectorAll('.gallery-thumb');
+    thumbs.forEach((btn) => {
+      if (btn.querySelector('.work-tag')) return;
+
+      const img = btn.querySelector('img');
+      const candidates = [
+        btn.getAttribute('data-work-number'),
+        btn.getAttribute('data-alt'),
+        img?.getAttribute('alt'),
+        btn.getAttribute('data-full'),
+        img?.getAttribute('src'),
+      ];
+
+      let workNumber = null;
+      for (const text of candidates) {
+        if (!text) continue;
+        const hashMatch = text.match(/#(\d+)/);
+        if (hashMatch) {
+          workNumber = `#${hashMatch[1]}`;
+          break;
+        }
+        const mieMatch = text.match(/MIE_(\d+)/i);
+        if (mieMatch) {
+          workNumber = `#${mieMatch[1]}`;
+          break;
+        }
+      }
+
+      if (workNumber) {
+        const tag = document.createElement('span');
+        tag.className = 'work-tag';
+        tag.setAttribute('aria-hidden', 'true');
+        tag.textContent = workNumber;
+        btn.appendChild(tag);
+      }
+    });
+  };
+
   const applyRandomCardTilt = () => {
     const candidates = document.querySelectorAll('.work-card, .gallery-card, .featured-card, .card');
     candidates.forEach((element) => {
@@ -391,6 +430,7 @@
     bindTextLanguageButtons();
     bindLanguageToggle();
     bindModal();
+    attachWorkNumbers();
     bindGalleryPagination();
     applyRandomCardTilt();
   });
